@@ -16,6 +16,7 @@ int main() {
     int numerosecreto = 42;
     int chute;
     int tentativas = 1;
+    int pontos = 1000;
 
     // loop até acertar ganhou = 1
     while (1) {
@@ -43,10 +44,15 @@ int main() {
             printf("Você errou, o número secreto é maior que %d\n", chute);
         }
         tentativas++;
+
+        int pontosperdidos = (chute - numerosecreto) / 2;
+        pontos = pontos - pontosperdidos;
+
     }
 
     printf("Fim de jogo!\n");
     printf("Você acertou em %d tentativas\n", tentativas);
+    printf("Total de pontos: %d\n", pontos);
     printf("********************************************\n");
     printf("\n");
 
