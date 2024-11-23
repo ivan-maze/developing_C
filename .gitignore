@@ -1,1 +1,10 @@
 .DS_Store
+
+# Ignore intermediate and output files
+*.o
+*.out
+*.exe
+
+# Ignore build and output directories
+build/
+output/

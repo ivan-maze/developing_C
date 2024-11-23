@@ -6,5 +6,5 @@ int main() {
     soma = soma + i;
   }
 
-  printf("A soma eh %d\n", soma);
+  printf("The sum of 1 to 100 is %d\n", soma);
 }
