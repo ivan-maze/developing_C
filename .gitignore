@@ -4,6 +4,7 @@
 *.o
 *.out
 *.exe
+*.dSYM/
 
 # Ignore build and output directories
 build/
