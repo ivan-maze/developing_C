@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main() {
     
@@ -13,8 +14,13 @@ int main() {
     printf("************************************************************\n");
     printf("\n");
 
+    // adding random seed
+    int seconds = time(0);
+    srand(seconds);
+    int random_number = rand();
+
     // define the variables
-    int secret_number = 42;
+    int secret_number = random_number % 100;
     int guess;
     int attempts = 1;
     double points = 1000;
