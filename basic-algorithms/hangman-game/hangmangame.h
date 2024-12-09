@@ -6,3 +6,4 @@ int already_kicked(char letter);
 void write_word();
 int hit();
 int hanged();
+void addnewword();
