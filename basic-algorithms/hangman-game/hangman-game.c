@@ -1,14 +1,54 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include "hangmangame.h"
 
 // global variables
 char secret_wolrd[20];
 char kicks[26];
 int attempts = 0;
 
+void addnewword() {
+    char add;
+    printf("Do you want to add a new word in the game? (Y/N)");
+    scanf(" %c", &add);
+
+    if (add == 'Y') {
+        char new_word[20];
+        printf("Type the new word: ");
+        scanf("%s",new_word);
+        FILE* f = fopen("../words.txt", "r+");
+        if (f == 0) {
+            printf("File not found\n\n");
+           exit(1);
+        }
+        int quantity;
+        fscanf(f, "%d", &quantity);
+        quantity++;
+        fseek(f, 0, SEEK_SET);
+        fprintf(f, "%d", quantity);
+        fseek(f, 0, SEEK_END);
+        fprintf(f, "\n%s", new_word);
+        fclose(f);
+    }
+}
+
 // choose a word to be guessed
 void chooseword() {
-    sprintf(secret_wolrd, "HELLO");
+    FILE* f = fopen("../words.txt", "r");
+    if (f == 0) {
+        printf("File not found\n\n");
+        exit(1);
+    }
+    int words_count;
+    fscanf(f, "%d", &words_count);
+    srand(time(0));
+    int random = rand() % words_count; 
+    for(int i = 0; i <= random; i++) {
+        fscanf(f, "%s", secret_wolrd);
+    }
+    fclose(f);
 }
 
 // print the welcome message
@@ -73,7 +113,7 @@ int hanged() {
         }
         if(!exist) mistakes++;
     }
-    return mistakes >= 5;
+    return mistakes >= 10;
 }
 
 int main () {
@@ -83,5 +123,5 @@ int main () {
         write_word(); 
         kick();
     } while (!hit() && !hanged());
-
+    addnewword();
 }
