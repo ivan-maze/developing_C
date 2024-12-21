@@ -2,10 +2,7 @@
 #include <stdlib.h>
 #include "pacmangame.h"
 
-// matrix 5x10
-char** map;
-int lines;
-int columns;
+struct map m;
 
 void readmap() {
     FILE* f = fopen("../map.txt", "r");
@@ -13,24 +10,24 @@ void readmap() {
         printf("File not found\n");
         exit(1);
     }
-    fscanf(f, "%d %d", &lines, &columns);
+    fscanf(f, "%d %d", &(m.lines), &(m.columns));
     allocatemap();
-    for (int i = 0; i < 5; i++){
-        fscanf(f, "%s", map[i]);
+    for (int i = 0; i < m.lines; i++){
+        fscanf(f, "%s", m.matrix[i]);
     }
     fclose(f);
 }
 
 void allocatemap() {
-    map = malloc(sizeof(char*) * lines);
-    for (int i = 0; i < lines; i++) {
-        map[i] = malloc(sizeof(char) * (columns+1));
+    m.matrix = malloc(sizeof(char*) * m.lines);
+    for (int i = 0; i < m.lines; i++) {
+        m.matrix[i] = malloc(sizeof(char) * (m.columns+1));
     }
 }
 
 void printmap() {
-    for (int i = 0; i < 5; i++){
-        printf("%s\n", map[i]);
+    for (int i = 0; i < m.lines; i++){
+        printf("%s\n", m.matrix[i]);
     }
 }
 
@@ -38,9 +35,9 @@ void movement(char direction) {
     int x;
     int y;
 
-    for(int i = 0 ; i < lines; i++) {
-        for(int j = 0; j < columns; j++) {
-            if(map[i][j] == '@') {
+    for(int i = 0 ; i < m.lines; i++) {
+        for(int j = 0; j < m.columns; j++) {
+            if(m.matrix[i][j] == '@') {
                 x = i;
                 y = j;
                 break;
@@ -50,26 +47,26 @@ void movement(char direction) {
 
     switch (direction) {
         case 'a':
-            map[x][y-1] = '@';
+            m.matrix[x][y-1] = '@';
             break;
         case 'w':
-            map[x-1][y] = '@';
+            m.matrix[x-1][y] = '@';
             break;
         case 's':
-            map[x+1][y] = '@';
+            m.matrix[x+1][y] = '@';
             break;
         case 'd':
-            map[x][y+1] = '@';
+            m.matrix[x][y+1] = '@';
             break;
     }
-    map [x][y] = '.';
+    m.matrix [x][y] = '.';
 }
 
 void freemap() {
-    for (int i = 0; i < lines; i++) {
-        free(map[i]);
+    for (int i = 0; i < m.lines; i++) {
+        free(m.matrix[i]);
     }
-    free(map);
+    free(m.matrix);
 }
 
 int gameover() {
