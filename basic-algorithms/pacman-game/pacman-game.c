@@ -7,15 +7,37 @@ MAP m;
 POSITION hero;
 
 void movement(char direction) {
- 
-    m.matrix [hero.x][hero.y] = '.';
+    
+    if (direction != 'a' &&
+        direction != 'w' &&
+        direction != 's' &&
+        direction != 'd') {
+        return;
+    }
+    
+    int nextx = hero.x;
+    int nexty = hero.y;
 
     switch (direction) {
-        case 'a': m.matrix[hero.x][hero.y-1] = '@'; hero.y--; break;
-        case 'w': m.matrix[hero.x-1][hero.y] = '@'; hero.x--; break;
-        case 's': m.matrix[hero.x+1][hero.y] = '@'; hero.x++; break;
-        case 'd': m.matrix[hero.x][hero.y+1] = '@'; hero.y++; break;
+        case 'a': nexty--; break;
+        case 'w': nextx--; break;
+        case 's': nextx++; break;
+        case 'd': nexty++; break;
     }
+    if (nextx >= m.lines) {
+        return;
+    }
+    if (nexty >= m.columns) {
+        return;
+    }
+    if (m.matrix[nextx][nexty] != '.') {
+        return;
+    }
+
+    m.matrix[nextx][nexty] = '@';
+    m.matrix[hero.x][hero.y] = '.';
+    hero.x = nextx;
+    hero.y = nexty;
 }
 
 int gameover() {

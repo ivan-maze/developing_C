@@ -2,18 +2,6 @@
 #include <stdlib.h>
 #include "map.h"
 
-void findposition(MAP* m, POSITION* p, char c) {
-    for(int i = 0 ; i < m->lines; i++) {
-        for(int j = 0; j < m->columns; j++) {
-            if(m->matrix[i][j] == c) {
-                p->x = i;
-                p->y = j;
-                break;
-            }
-        }
-    }
-}
-
 void readmap(MAP* m) {
     FILE* f = fopen("map.txt", "r");
     if (f == 0) {
@@ -38,6 +26,18 @@ void allocatemap(MAP* m) {
 void printmap(MAP* m) {
     for (int i = 0; i < m->lines; i++){
         printf("%s\n", m->matrix[i]);
+    }
+}
+
+void findposition(MAP* m, POSITION* p, char c) {
+    for (int i = 0 ; i < m->lines; i++) {
+        for (int j = 0; j < m->columns; j++) {
+            if (m->matrix[i][j] == c) {
+                p->x = i;
+                p->y = j;
+                break;
+            }
+        }
     }
 }
 
