@@ -6,59 +6,59 @@
 MAP m;
 POSITION hero;
 
-int validdirection(char direction) {
+int valid_direction(char direction) {
     return 
-        direction == 'a' ||
-        direction == 'w' ||
-        direction == 's' ||
-        direction == 'd';
+        direction == LEFT ||
+        direction == UP ||
+        direction == DOWN ||
+        direction == RIGHT;
 }
 
-void movement(char direction) {
+void hero_movement(char direction) {
     
-    if (!validdirection(direction)) {
+    if (!valid_direction(direction)) {
         return;
     }
     
-    int nextx = hero.x;
-    int nexty = hero.y;
+    int next_x = hero.x;
+    int next_y = hero.y;
 
     switch (direction) {
-        case 'a': nexty--; break;
-        case 'w': nextx--; break;
-        case 's': nextx++; break;
-        case 'd': nexty++; break;
+        case LEFT: next_y--; break;
+        case UP: next_x--; break;
+        case DOWN: next_x++; break;
+        case RIGHT: next_y++; break;
     }
     
-    if (mapboundaries(&m, nextx, nexty)) {
+    if (map_boundaries(&m, next_x, next_y)) {
         return;
     }
 
-    if (!isvalidpath(&m, nextx, nexty)) {
+    if (!is_valid_path(&m, next_x, next_y)) {
         return;
     }
     
-    walkonmap(&m, hero.x, hero.y, nextx, nexty);
-    hero.x = nextx;
-    hero.y = nexty;
+    walk_on_map(&m, hero.x, hero.y, next_x, next_y);
+    hero.x = next_x;
+    hero.y = next_y;
 }
 
-int gameover() {
+int game_over() {
     return 0;
 }
 
 int main() {
-    readmap(&m);
-    findposition(&m, &hero, '@');
+    read_map(&m);
+    find_position(&m, &hero, CHAR_HERO);
 
     do {
-        printmap(&m);
+        print_map(&m);
 
         char command;
         scanf(" %c", &command);
-        movement(command);
+        hero_movement(command);
 
-    } while(!gameover());
+    } while(!game_over());
     
-    freemap(&m);
+    free_map(&m);
 }
