@@ -41,6 +41,27 @@ void findposition(MAP* m, POSITION* p, char c) {
     }
 }
 
+int mapboundaries(MAP* m, int x, int y) {
+    if (x >= m->lines) {
+        return 1;
+    }
+    if (y >= m->columns) {
+        return 1;
+    }
+    return 0;
+}
+
+int isvalidpath(MAP* m, int x, int y) {
+    return m->matrix[x][y] == '.';
+        
+}
+
+void walkonmap(MAP* m, int xorigin, int yorigin, int xdestiny, int ydestiny) {
+    char heroposition = m->matrix[xorigin][yorigin];
+    m->matrix[xdestiny][ydestiny] = heroposition;
+    m->matrix[xorigin][yorigin] = '.';
+}
+
 void freemap(MAP* m) {
     for (int i = 0; i < m->lines; i++) {
         free(m->matrix[i]);

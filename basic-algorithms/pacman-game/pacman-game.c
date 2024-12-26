@@ -1,17 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pacmangame.h"
+#include "pacman-game.h"
 #include "map.h"
 
 MAP m;
 POSITION hero;
 
+int validdirection(char direction) {
+    return 
+        direction == 'a' ||
+        direction == 'w' ||
+        direction == 's' ||
+        direction == 'd';
+}
+
 void movement(char direction) {
     
-    if (direction != 'a' &&
-        direction != 'w' &&
-        direction != 's' &&
-        direction != 'd') {
+    if (!validdirection(direction)) {
         return;
     }
     
@@ -24,18 +29,16 @@ void movement(char direction) {
         case 's': nextx++; break;
         case 'd': nexty++; break;
     }
-    if (nextx >= m.lines) {
-        return;
-    }
-    if (nexty >= m.columns) {
-        return;
-    }
-    if (m.matrix[nextx][nexty] != '.') {
+    
+    if (mapboundaries(&m, nextx, nexty)) {
         return;
     }
 
-    m.matrix[nextx][nexty] = '@';
-    m.matrix[hero.x][hero.y] = '.';
+    if (!isvalidpath(&m, nextx, nexty)) {
+        return;
+    }
+    
+    walkonmap(&m, hero.x, hero.y, nextx, nexty);
     hero.x = nextx;
     hero.y = nexty;
 }
@@ -56,7 +59,6 @@ int main() {
         movement(command);
 
     } while(!gameover());
-    
     
     freemap(&m);
 }

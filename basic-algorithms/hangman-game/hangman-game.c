@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "hangmangame.h"
+#include "hangman-game.h"
 
 // global variables
 char secret_word[WORD_SIZE];
