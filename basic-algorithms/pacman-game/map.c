@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "map.h"
 
 void allocate_map(MAP* m) {
@@ -8,7 +9,6 @@ void allocate_map(MAP* m) {
         m->matrix[i] = malloc(sizeof(char) * (m->columns+1));
     }
 }
-
 void read_map(MAP* m) {
     FILE* f = fopen("map.txt", "r");
     if (f == 0) {
@@ -22,13 +22,11 @@ void read_map(MAP* m) {
     }
     fclose(f);
 }
-
 void print_map(MAP* m) {
     for (int i = 0; i < m->lines; i++){
         printf("%s\n", m->matrix[i]);
     }
 }
-
 void find_position(MAP* m, POSITION* p, char c) {
     for (int i = 0 ; i < m->lines; i++) {
         for (int j = 0; j < m->columns; j++) {
@@ -40,7 +38,6 @@ void find_position(MAP* m, POSITION* p, char c) {
         }
     }
 }
-
 int map_boundaries(MAP* m, int x, int y) {
     if (x >= m->lines) {
         return 1;
@@ -50,18 +47,22 @@ int map_boundaries(MAP* m, int x, int y) {
     }
     return 0;
 }
-
 int is_valid_path(MAP* m, int x, int y) {
     return m->matrix[x][y] == EMPTY_POSITION;
-        
 }
-
 void walk_on_map(MAP* m, int xorigin, int yorigin, int xdestiny, int ydestiny) {
     char hero_position = m->matrix[xorigin][yorigin];
     m->matrix[xdestiny][ydestiny] = hero_position;
     m->matrix[xorigin][yorigin] = EMPTY_POSITION;
 }
-
+void copy_map(MAP* destiny, MAP* origin) {
+    destiny->lines = origin->lines;
+    destiny->columns = origin->columns;
+    allocate_map(destiny);
+    for (int i = 0; i < origin->lines; i++) {
+        strcpy(destiny->matrix[i], origin->matrix[i]);
+    }
+}
 void free_map(MAP* m) {
     for (int i = 0; i < m->lines; i++) {
         free(m->matrix[i]);
