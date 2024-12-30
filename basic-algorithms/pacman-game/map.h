@@ -1,4 +1,5 @@
 #define CHAR_HERO '@'
+#define PHANTOM 'P'
 #define EMPTY_POSITION '.'
 
 struct map {
@@ -18,6 +19,7 @@ void allocate_map(MAP* m);
 void read_map(MAP* m);
 void free_map(MAP* m);
 void print_map(MAP* m);
+void copy_map(MAP* destiny, MAP* origin);
 void find_position(MAP* m, POSITION* p, char c);
 int map_boundaries(MAP* m, int x, int y);
 int is_valid_path(MAP* m, int x, int y);
