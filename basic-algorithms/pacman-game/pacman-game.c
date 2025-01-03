@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "pacman-game.h"
 #include "map.h"
 
@@ -35,19 +36,41 @@ void hero_movement(char direction) {
     hero.x = next_x;
     hero.y = next_y;
 }
+int phantom_direction(int x_origin, int y_origin, int* x_destiny, int* y_destiny) {
+    int options[4][2] = {
+        {x_origin, y_origin+1},
+        {x_origin+1, y_origin},
+        {x_origin, y_origin-1},
+        {x_origin-1, y_origin}
+    };
+    srand(time(0));
+    for (int i=0; i<10; i++) {
+        int position = rand()%4;
+        if (is_valid_path(&m, options[position][0], options[position][1]) &&
+            !map_boundaries(&m, options[position][0], options[position][1])) {
+            *x_destiny = options[position][0];
+            *y_destiny = options[position][1];
+            return 1;
+        }
+    }
+    return 0;
+}
 void phantom_movement() {
     MAP copy;
     copy_map(&copy, &m);
     for (int i = 0; i < m.lines; i++) {
         for (int j = 0; j <= m.columns; j++) {
             if (copy.matrix[i][j] == PHANTOM) {
-                if(is_valid_path(&m, i, j+1) && is_valid_path(&m, i, j+1)) {
-                    walk_on_map(&m, i, j, i, j+1);
+                int x_destiny;
+                int y_destiny;
+                int found = phantom_direction(i, j, &x_destiny, &y_destiny);
+                if(found) {
+                    walk_on_map(&m, i, j, x_destiny, y_destiny);
                 }
             }
         }
     }
-
+    free_map(&copy);
 }
 int game_over() {
     return 0;

@@ -50,10 +50,10 @@ int map_boundaries(MAP* m, int x, int y) {
 int is_valid_path(MAP* m, int x, int y) {
     return m->matrix[x][y] == EMPTY_POSITION;
 }
-void walk_on_map(MAP* m, int xorigin, int yorigin, int xdestiny, int ydestiny) {
-    char hero_position = m->matrix[xorigin][yorigin];
-    m->matrix[xdestiny][ydestiny] = hero_position;
-    m->matrix[xorigin][yorigin] = EMPTY_POSITION;
+void walk_on_map(MAP* m, int x_origin, int y_origin, int x_destiny, int y_destiny) {
+    char hero_position = m->matrix[x_origin][y_origin];
+    m->matrix[x_destiny][y_destiny] = hero_position;
+    m->matrix[x_origin][y_origin] = EMPTY_POSITION;
 }
 void copy_map(MAP* destiny, MAP* origin) {
     destiny->lines = origin->lines;
